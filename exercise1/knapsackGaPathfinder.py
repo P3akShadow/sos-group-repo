@@ -1,23 +1,25 @@
 #!/usr/bin/python3
 
+import numpy as np
 from knapsackUtils import evaluate, generateInstance
 
 from deap import base, creator, tools
 import random
 
-knapsackSizes = [10,10]
-itemSizes = [9,7,5,4,1]
-print(evaluate(knapsackSizes, itemSizes, range(5)))
-print(evaluate(knapsackSizes, itemSizes, [0,4,2,1,3]))
+knapsackSizes = [[10],[10]]
+itemSizes = [[9],[7],[5],[4],[1]]
+#print(evaluate(knapsackSizes, itemSizes, range(5)))
+#print(evaluate(knapsackSizes, itemSizes, [0,4,2,1,3]))
 
-knapsacks = 30
-items = 100
-(knapsackSizes, itemSizes) = generateInstance(knapsacks, items, knapsack_mean=5, items_mean=3)
+knapsacks = 10
+items = 200
+(knapsackSizes, itemSizes) = generateInstance(knapsacks, items, knapsack_mean=10, items_mean=3, dimensions=3)
 print(knapsackSizes)
-print(itemSizes)
+#print(itemSizes)
+#print(evaluate(knapsackSizes, itemSizes, range(10)))
 
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMax)
+creator.create("FitnessKnapsack", base.Fitness, weights=(1.0, -10.0))
+creator.create("Individual", list, fitness=creator.FitnessKnapsack)
 
 toolbox = base.Toolbox()
 toolbox.register("indices", random.sample, range(items), items)
@@ -31,7 +33,7 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.in
 toolbox.register("mate", tools.cxPartialyMatched)
 toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.1)
 toolbox.register("select", tools.selTournament, tournsize=3)
-toolbox.register("evaluate", lambda x: [evaluate(knapsackSizes, itemSizes, x)])
+toolbox.register("evaluate", lambda x: evaluate(knapsackSizes, itemSizes, x))
 
 
 pop = [toolbox.individual() for _ in range(400)]
@@ -40,7 +42,7 @@ fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
 for ind, fit in zip(invalid_ind, fitnesses):
     ind.fitness.values = fit
 best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
-starting_fitness = best_ind.fitness.values[0]
+starting_fitness = best_ind.fitness.values
 
 best_ind
 for g in range(50):
@@ -50,7 +52,7 @@ for g in range(50):
     
     best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
     print(best_ind)
-    print(best_ind.fitness.values[0])
+    print(best_ind.fitness.values)
 
     offspring = toolbox.select(pop, len(pop))
     offspring = list(toolbox.map(toolbox.clone, offspring))
@@ -73,7 +75,7 @@ for g in range(50):
     
     pop[:] = offspring
 
-print(f"sum elements {sum(itemSizes)}")
-print(f"sum knapsacks {sum(knapsackSizes)}")
+print(f"sum elements {np.sum(itemSizes)}")
+print(f"sum knapsacks {np.sum(knapsackSizes)}")
 print(f"starting fitness was {starting_fitness}")
-print(f"last best fitness {best_ind.fitness.values[0]}")
+print(f"last best fitness {best_ind.fitness.values}")
