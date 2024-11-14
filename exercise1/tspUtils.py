@@ -1,9 +1,10 @@
 import random
 import math
 
-def generateInstance(size):
-    firstCities = [(random.uniform(-3,0), random.uniform(-3,0)) for _ in range(math.floor(size/2))]
-    secondCities = [(random.uniform(0,3), random.uniform(0,3)) for _ in range(math.ceil(size/2))]
+def generateInstance(size, seed=1):
+    rd = random.Random(seed)
+    firstCities = [(rd.uniform(-3,0), rd.uniform(-3,0)) for _ in range(math.floor(size/2))]
+    secondCities = [(rd.uniform(0,3), rd.uniform(0,3)) for _ in range(math.ceil(size/2))]
     return firstCities + secondCities
 
 def evaluate(instance, ordering):
