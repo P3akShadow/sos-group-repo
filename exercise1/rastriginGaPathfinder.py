@@ -9,7 +9,7 @@ creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
 
 def optimize(dimensions=5, population=40, iterations=1000):
-    IND_SIZE = 5
+    IND_SIZE = dimensions
     
     toolbox = base.Toolbox()
     
@@ -17,7 +17,7 @@ def optimize(dimensions=5, population=40, iterations=1000):
     toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float, n=IND_SIZE)
     
     toolbox.register("mate", tools.cxTwoPoint)
-    toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.3, indpb=0.3)
+    toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=0.3, indpb=1.3/dimensions)
     toolbox.register("select", tools.selTournament, tournsize=3)
     toolbox.register("evaluate", lambda x:  [rastrigin(x)])
 
@@ -26,13 +26,21 @@ def optimize(dimensions=5, population=40, iterations=1000):
     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
     for ind, fit in zip(invalid_ind, fitnesses):
         ind.fitness.values = fit
+
+    bestFit = []
     
+    globalBest = float("inf")
     for g in range(iterations):
         print("#################")
         print(f"generation {g}")
         print("#################")
-        for ind in pop:
-            print(ind.fitness)
+
+        best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
+        #for ind in pop:
+            #print(ind.fitness)
+        if best_ind.fitness.values[0] < globalBest:
+            globalBest = best_ind.fitness.values[0]
+        bestFit += [(g, best_ind.fitness.values[0], globalBest)]
     
         offspring = toolbox.select(pop, len(pop))
         offspring = list(toolbox.map(toolbox.clone, offspring))
@@ -54,6 +62,7 @@ def optimize(dimensions=5, population=40, iterations=1000):
             ind.fitness.values = fit
         
         pop[:] = offspring
+    return bestFit
 
 if __name__ == "__main__":
-    optimize()
+    print(optimize(dimensions=5, population=500, iterations=200))
