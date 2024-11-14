@@ -36,46 +36,55 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("evaluate", lambda x: evaluate(knapsackSizes, itemSizes, x))
 
 
-pop = [toolbox.individual() for _ in range(400)]
-invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-for ind, fit in zip(invalid_ind, fitnesses):
-    ind.fitness.values = fit
-best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
-starting_fitness = best_ind.fitness.values
-
-best_ind
-for g in range(50):
-    print("#################")
-    print(f"generation {g}")
-    print("#################")
-    
-    best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
-    print(best_ind)
-    print(best_ind.fitness.values)
-
-    offspring = toolbox.select(pop, len(pop))
-    offspring = list(toolbox.map(toolbox.clone, offspring))
-
-    for child1, child2 in zip(offspring[::2], offspring[1::2]):  #[x::2] takes every other element starting from x
-        if random.random() < 0.8:
-            toolbox.mate(child1, child2)
-            del child1.fitness.values
-            del child1.fitness.values
-
-    for mutant in offspring:
-        if random.random() < 0.3:
-            toolbox.mutate(mutant)
-            del mutant.fitness.values
-
-    invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+def optimize(population=400, iterations=10):
+    pop = [toolbox.individual() for _ in range(population)]
+    invalid_ind = [ind for ind in pop if not ind.fitness.valid]
     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
     for ind, fit in zip(invalid_ind, fitnesses):
         ind.fitness.values = fit
+    best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
+    starting_fitness = best_ind.fitness.values
     
-    pop[:] = offspring
+    best_ind
+    bestFit = []
+    globalBest = -float("inf")
+    for g in range(iterations):
+        print("#################")
+        print(f"generation {g}")
+        print("#################")
+        
+        best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
+        print(best_ind)
+        print(best_ind.fitness.values)
+        if globalBest < best_ind.fitness.values[0]:
+            globalBest = best_ind.fitness.values[0]
+        bestFit += [(g, best_ind.fitness.values[0], globalBest)]
+    
+        offspring = toolbox.select(pop, len(pop))
+        offspring = list(toolbox.map(toolbox.clone, offspring))
+    
+        for child1, child2 in zip(offspring[::2], offspring[1::2]):  #[x::2] takes every other element starting from x
+            if random.random() < 0.8:
+                toolbox.mate(child1, child2)
+                del child1.fitness.values
+                del child1.fitness.values
+    
+        for mutant in offspring:
+            if random.random() < 0.3:
+                toolbox.mutate(mutant)
+                del mutant.fitness.values
+    
+        invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+        
+        pop[:] = offspring
+    
+    print(f"sum elements {np.sum(itemSizes)}")
+    print(f"sum knapsacks {np.sum(knapsackSizes)}")
+    print(f"starting fitness was {starting_fitness}")
+    print(f"last best fitness {best_ind.fitness.values}")
 
-print(f"sum elements {np.sum(itemSizes)}")
-print(f"sum knapsacks {np.sum(knapsackSizes)}")
-print(f"starting fitness was {starting_fitness}")
-print(f"last best fitness {best_ind.fitness.values}")
+if __name__ == "__main__":
+    print(optimize())
