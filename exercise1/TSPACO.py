@@ -45,7 +45,7 @@ def print_solution(path):
     print('| id |    x |    y |')
     result = 0
     for edge in path:
-        print('|%4i|%6i|%6i|' % edge.end)
+        print('|%4i|%g|%g|' % edge.end)
         result = result + edge.info
     print('total path length = %g' % result)
 

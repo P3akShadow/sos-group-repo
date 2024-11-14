@@ -5,6 +5,7 @@ import numpy as np
 import random
 
 from rastriginUtils import rastrigin
+from evalUtils import c_optimize
 
 # parameters        
 n = 5
@@ -15,7 +16,7 @@ max_iterations = 100
 early_stop_after_same_it = 50
 
 # generate nodes for the graph
-interval = np.linspace(0.0, 5.12, num=interval_values)
+interval = np.linspace(-5.12, 5.12, num=interval_values)
 nodes = []
 for dim in range(1, n+1):
     for i, value in enumerate(interval):
@@ -72,7 +73,7 @@ def print_solution(path):
     # mask = np.array([False for i in range(n)])
     for edge in path:
         if(edge.info == 1):
-            print('|%4i|%2i|%6i|' % edge.end)
+            print('|%4i|%g|%g|' % edge.end)
             x[edge.end[1]-1] = edge.end[2]
             # mask[edge.end[1]-1] = True
             
@@ -80,6 +81,13 @@ def print_solution(path):
         print('no valid solution found')
         return
     print('rastgirin(x) = %g' % rastrigin(x))
+    
+def solution_from_path(path):
+    x = [0 for i in range(n)]
+    for edge in path:
+        if(edge.info == 1):
+            x[edge.end[1]-1] = edge.end[2]
+    return x
 
 # The world (new_world) is created from the nodes as a either a cyclic or a complete graph.
 random.shuffle(nodes) # if we do not shuffle, cyclic immediately finds the shortest path due to the node distribution and the heuristic
@@ -91,7 +99,11 @@ ant_opt_cyclic = AntSystem(world=new_world_cyclic, n_ants=num_ants)
 # ant_opt_connected = AntSystem(world=new_world_connected, n_ants=num_ants)
 
 # # Execute the optimization loop.
-ant_opt_cyclic.optimize(max_iterations,early_stop_after_same_it)
+
+iterations = c_optimize(ant_opt_cyclic, max_iterations,early_stop_after_same_it, False)
+for iteration in iterations:
+    print(iteration)
+# ant_opt_cyclic.optimize(max_iterations,early_stop_after_same_it)
 # ant_opt_connected.optimize(max_iterations,early_stop_after_same_it)
 
 # # Show details about the best solution found.
