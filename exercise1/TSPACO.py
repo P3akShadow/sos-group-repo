@@ -15,18 +15,9 @@ max_iterations = 100
 early_stop_after_same_it = 50
 
 # generate nodes for the graph
-# interval = np.linspace(0.0, 5.12, num=interval_values)
-nodes = []
-# for dim in range(1, n+1):
-    # for i, value in enumerate(interval):
-        # node = (i+dim*interval_values, dim, value)
-        # nodes.append(node)
-for i in range(num_cities):
-    nodes.append((i, random.randint(0,gridsize), random.randint(0,gridsize)))
-    
+instance = generateInstance(num_cities)
+nodes = [(i, city[0], city[1]) for i, city in enumerate(instance)]
 
-
-# print(nodes)
 # ID, x, y
 # we add the euclidean distance to the nodes
 def tsp_rules(start, end):
