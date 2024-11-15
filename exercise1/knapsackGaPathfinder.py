@@ -18,7 +18,7 @@ print(knapsackSizes)
 #print(itemSizes)
 #print(evaluate(knapsackSizes, itemSizes, range(10)))
 
-creator.create("FitnessKnapsack", base.Fitness, weights=(1.0, -10.0))
+creator.create("FitnessKnapsack", base.Fitness, weights=(10.0, -1.0))
 creator.create("Individual", list, fitness=creator.FitnessKnapsack)
 
 toolbox = base.Toolbox()
@@ -31,12 +31,12 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.in
 #Create a mapping that maps elements to the element in the same position but on the other side
 #map the occuring elements accordingly to keep the permutation property
 toolbox.register("mate", tools.cxPartialyMatched)
-toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.1)
+toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1.5/items)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("evaluate", lambda x: evaluate(knapsackSizes, itemSizes, x))
 
 
-def optimize(population=400, iterations=10):
+def optimize(population=400, iterations=100):
     pop = [toolbox.individual() for _ in range(population)]
     invalid_ind = [ind for ind in pop if not ind.fitness.valid]
     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
