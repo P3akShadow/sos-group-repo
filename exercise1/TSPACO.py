@@ -7,16 +7,18 @@ import random
 from tspUtils import generateInstance, evaluate
 
 # parameters        
-num_cities = 20
+num_cities = 50
 gridsize = 100
 
 num_ants = 100
 max_iterations = 100
-early_stop_after_same_it = 50
+early_stop_after_same_it = 20
 
 # generate nodes for the graph
 instance = generateInstance(num_cities)
 nodes = [(i, city[0], city[1]) for i, city in enumerate(instance)]
+
+random.shuffle(nodes)
 
 # ID, x, y
 # we add the euclidean distance to the nodes
@@ -50,18 +52,14 @@ def print_solution(path):
     print('total path length = %g' % result)
 
 # The world (new_world) is created from the nodes as a either a cyclic or a complete graph.
-random.shuffle(nodes) # if we do not shuffle, cyclic immediately finds the shortest path due to the node distribution and the heuristic
-#new_world_cyclic = AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, False)
-new_world_connected = AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, True, 10)
+#new_world = AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, False) # cyclic doesn't make any sense here
+new_world= AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, True, 10)
 
 # # Configure ant_opt as an AntSystem.
-#ant_opt_cyclic = AntSystem(world=new_world_cyclic, n_ants=num_ants) # cyclic doesn't make any sense here
-ant_opt_connected = AntSystem(world=new_world_connected, n_ants=num_ants)
+ant_opt = AntSystem(world=new_world, n_ants=num_ants) 
 
 # # Execute the optimization loop.
-#ant_opt_cyclic.optimize(max_iterations,early_stop_after_same_it) # cyclic doesn't make any sense here
-ant_opt_connected.optimize(max_iterations,early_stop_after_same_it)
+ant_opt.optimize(max_iterations, early_stop_after_same_it)
 
 # # Show details about the best solution found.
-#print_solution(ant_opt_cyclic.g_best[2]) # cyclic doesn't make any sense here
-print_solution(ant_opt_connected.g_best[2])
+print_solution(ant_opt.g_best[2])
