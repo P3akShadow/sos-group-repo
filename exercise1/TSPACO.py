@@ -5,20 +5,52 @@ import numpy as np
 import random
 
 from tspUtils import generateInstance, evaluate
+from evalUtils import c_optimize
 
-# parameters        
-num_cities = 50
-gridsize = 100
+def main():
+    train_ants()
+    
 
-num_ants = 100
-max_iterations = 100
-early_stop_after_same_it = 20
+def train_ants(old=True, verbose=True, num_cities=50):
+    # parameters        
+    
+    # gridsize = 100
 
-# generate nodes for the graph
-instance = generateInstance(num_cities)
-nodes = [(i, city[0], city[1]) for i, city in enumerate(instance)]
+    num_ants = 100
+    max_iterations = 200
+    early_stop_after_same_it = 50
+    pheromone_weight = .5
 
-random.shuffle(nodes)
+    # generate nodes for the graph
+    instance = generateInstance(num_cities)
+    nodes = [(i, city[0], city[1]) for i, city in enumerate(instance)]
+
+    random.shuffle(nodes)
+
+    # The world (new_world) is created from the nodes as a either a cyclic or a complete graph.
+    #new_world = AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, False) # cyclic doesn't make any sense here
+    new_world= AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, True, 10)
+
+    # Configure ant_opt as an AntSystem.
+    ant_opt = AntSystem(world=new_world,
+                        n_ants=num_ants,
+                        alpha=pheromone_weight
+                        )
+
+    # Execute the optimization loop.
+    iterations = c_optimize(ant_opt,
+                            max_iterations,
+                            early_stop_after_same_it,
+                            verbose=verbose
+                            )
+
+    # for iteration in iterations:
+    #     print(iteration)
+                
+    # Show details about the best solution found.
+    print_solution(ant_opt.g_best[2])
+
+    return iterations
 
 # ID, x, y
 # we add the euclidean distance to the nodes
@@ -51,15 +83,5 @@ def print_solution(path):
         result = result + edge.info
     print('total path length = %g' % result)
 
-# The world (new_world) is created from the nodes as a either a cyclic or a complete graph.
-#new_world = AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, False) # cyclic doesn't make any sense here
-new_world= AntWorld(nodes, tsp_rules, tsp_cost, tsp_heuristic, True, 10)
-
-# # Configure ant_opt as an AntSystem.
-ant_opt = AntSystem(world=new_world, n_ants=num_ants) 
-
-# # Execute the optimization loop.
-ant_opt.optimize(max_iterations, early_stop_after_same_it)
-
-# # Show details about the best solution found.
-print_solution(ant_opt.g_best[2])
+if __name__ == '__main__':
+    main()

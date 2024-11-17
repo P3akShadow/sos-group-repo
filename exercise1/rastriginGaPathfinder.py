@@ -8,7 +8,7 @@ from deap import base, creator, tools, algorithms
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
 
-def optimize(dimensions=5, population=40, iterations=1000):
+def optimize(dimensions=5, population=40, iterations=1000, verbose=True):
     IND_SIZE = dimensions
     
     toolbox = base.Toolbox()
@@ -31,9 +31,10 @@ def optimize(dimensions=5, population=40, iterations=1000):
     
     globalBest = float("inf")
     for g in range(iterations):
-        print("#################")
-        print(f"generation {g}")
-        print("#################")
+        if verbose:
+            print("#################")
+            print(f"generation {g}")
+            print("#################")
 
         best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
         #for ind in pop:

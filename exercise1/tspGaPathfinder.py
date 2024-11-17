@@ -27,7 +27,7 @@ toolbox.register("select", tools.selTournament, tournsize=4)
 toolbox.register("evaluate", lambda x: (evaluate(instance, x),))
 
 
-def optimize(population=400, iterations=100):
+def optimize(population=400, iterations=100, verbose=True):
     pop = [toolbox.individual() for _ in range(population)]
     invalid_ind = [ind for ind in pop if not ind.fitness.valid]
     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
@@ -39,9 +39,10 @@ def optimize(population=400, iterations=100):
     bestFit = []
     globalBest = float("inf")
     for g in range(iterations):
-        print("#################")
-        print(f"generation {g}")
-        print("#################")
+        if verbose:
+            print("#################")
+            print(f"generation {g}")
+            print("#################")
         
         best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
         print(best_ind)
