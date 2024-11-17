@@ -16,7 +16,7 @@ import tspGaPathfinder as tG
 # from tspUtils import generateInstance, evaluate
 
 def main():
-    time_sos()
+    #time_sos()
     plot()
 
 def time_sos():
@@ -119,7 +119,7 @@ def time_sos():
 
 def plot():
     verbose = True #do we want to print everything? 
-    iterations = 200
+    iterations = 30
     
     plot1 = plt.subplot2grid((3, 1), (0, 0))
     plot2 = plt.subplot2grid((3, 1), (1, 0))
@@ -142,6 +142,7 @@ def plot():
     plot1.set_xlabel("Iteration/Generation")
     plot1.set_ylabel("rastrigin value")
 
+    print("calc knapsacks")
     num_knapsacks = 10
     num_items = 100
     dim=3
@@ -171,7 +172,7 @@ def plot():
     plot3.set_ylabel("shortest path length")
 
     plt.tight_layout()
-    plt.legend()
+    plt.legend(loc="upper right")
     plt.show()
 
 if __name__ == '__main__':

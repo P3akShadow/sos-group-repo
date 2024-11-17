@@ -12,7 +12,7 @@ def generateInstance(numberOfKnapsacks, numberOfItems, knapsack_mean=knapsack_me
     return(knapsacks, items)
 
 
-def evaluate(knapsacks, items, order):
+def evaluate(knapsacks, items, order, verbose=False):
     capacities = knapsacks.copy()
 
     size = 0
@@ -20,8 +20,11 @@ def evaluate(knapsacks, items, order):
         for i, capacityArr in enumerate(capacities):
             diff = capacities[i] - items[pos][1:]
             if np.min(diff) >= 0:
+                if verbose:
+                    print(f"knapsack {i} takes in value {items[pos][0]} of cost {items[pos][1:]}")
                 capacities[i] -= items[pos][1:]
                 size += np.sum(items[pos][0])
+                #size += np.product(items[pos])
                 break
 
     return (size, np.sum(capacities))
