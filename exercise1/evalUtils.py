@@ -66,7 +66,7 @@ def c_optimize(antSys, max_iter=50, n_iter_no_change=10, verbose=True):
       if verbose:
         # Show the log information of the current iteration
         print('|%6i|%20g|%20g|%20g|' % (iter, ants[0][0], ants[-1][0], antSys.g_best[0]))
-      result.append((iter, ants[0][0], ants[-1][0], antSys.g_best[0]))
+      result.append((iter-1, ants[0][0], antSys.g_best[0]))
         
       # Finish the optimization process if *g_best* is not updated for n_iter_no_change iterations
       if count >= n_iter_no_change:

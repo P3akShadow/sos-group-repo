@@ -13,13 +13,14 @@ def main():
     train_ants()
     
 
-def train_ants(old=True, verbose=True, n=5):
+def train_ants(old=True, verbose=True, n=5, max_iterations=5):
     # parameters
     interval_values = 13
 
     num_ants = 100
-    max_iterations = 200
+    # max_iterations = 200
     early_stop_after_same_it = 50
+
     pheromone_weight = .5
 
     interval = np.hstack([np.linspace(-5.12, 0, num=interval_values), np.linspace(0, 5.12, num=interval_values)[1:]])
@@ -69,14 +70,17 @@ def train_ants(old=True, verbose=True, n=5):
                             verbose=verbose
                             )
 
-    # for iteration in iterations:
-    #     print(iteration)
+
                 
     # Show details about the best solution found.
-    if old:
-        print_solution_old(ant_opt.g_best[2], n)
-    else:
-        print_solution(ant_opt.g_best[2], n)
+    if verbose:
+        for iteration in iterations:
+            print(iteration)
+        if old:
+            print_solution_old(ant_opt.g_best[2], n)
+        else:
+            print_solution(ant_opt.g_best[2], n)
+
 
     return iterations
 
@@ -170,7 +174,6 @@ def rastrigin_heuristic(path, candidate, n):
 def rastrigin_heuristic2(path, candidate, n):
     mask = np.array([False for i in range(n)])
     x = np.random.sample(n) * 10 - 5
-    # x = [0 for i in range(n)] #TODO: a different heuristic could try rastrigin w/ randomly initialized x, with set x_i and the candidate changed
     for edge in path:
         if edge.info > 0:
             mask[edge.info-1] = True

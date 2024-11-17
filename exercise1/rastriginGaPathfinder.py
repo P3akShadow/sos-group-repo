@@ -5,8 +5,18 @@ import random
 from rastriginUtils import rastrigin
 from deap import base, creator, tools, algorithms
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-creator.create("Individual", list, fitness=creator.FitnessMin)
+def main():
+    train_GA()
+
+def train_GA(verbose=True,iterations=200,dimensions=5):
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+    creator.create("Individual", list, fitness=creator.FitnessMin)
+
+    result = optimize(dimensions=dimensions, population=500, iterations=iterations, verbose=verbose)
+    if verbose:
+        print(result)
+
+    return result
 
 def optimize(dimensions=5, population=40, iterations=1000, verbose=True):
     IND_SIZE = dimensions
@@ -66,4 +76,4 @@ def optimize(dimensions=5, population=40, iterations=1000, verbose=True):
     return bestFit
 
 if __name__ == "__main__":
-    print(optimize(dimensions=5, population=500, iterations=200))
+    main()

@@ -11,14 +11,14 @@ def main():
     train_ants()
     
 
-def train_ants(old=True, verbose=True, num_cities=50):
+def train_ants(old=True, verbose=True, num_cities=50, max_iterations=200):
     # parameters        
     
     # gridsize = 100
 
     num_ants = 100
-    max_iterations = 200
     early_stop_after_same_it = 50
+
     pheromone_weight = .5
 
     # generate nodes for the graph
@@ -44,18 +44,16 @@ def train_ants(old=True, verbose=True, num_cities=50):
                             verbose=verbose
                             )
 
-    # for iteration in iterations:
-    #     print(iteration)
-                
     # Show details about the best solution found.
-    print_solution(ant_opt.g_best[2])
+    if verbose:
+        print_solution(ant_opt.g_best[2])
 
     return iterations
 
-# ID, x, y
+# node = (ID, x, y)
 # we add the euclidean distance to the nodes
 def tsp_rules(start, end):
-    return [(np.sqrt((start[1]-end[1])**2 + (start[2]-end[2])**2))] #TODO
+    return [(np.sqrt((start[1]-end[1])**2 + (start[2]-end[2])**2))]
 
 # used to calculate the cost of a path, sum of the distances
 def tsp_cost(path):
@@ -66,7 +64,7 @@ def tsp_cost(path):
 
 # ants prefere to include the closest node
 def tsp_heuristic(path, candidate):
-    return candidate.info #TODO prbly should penalize already included nodes - or not, seems to not do that anyways
+    return candidate.info #should penalize already included nodes - or not, seems to not revisit nodes anyway
 
 # no preference for one path over another 
 def simple_tsp_heuristic(path, candidate):
