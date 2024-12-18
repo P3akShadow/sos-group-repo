@@ -162,7 +162,7 @@ def print_solution(path, knapsacks): #TODO
     num_knapsacks, dim = knapsacks.shape
     for i, knapsack_capacity in enumerate(knapsacks):
         print('chosen items for knapsack %d:' % (i+1))
-        s = '| id | value|' + "".join(["  dim" +str(i+1)+"|" for j in range(dim)])
+        s = '| id | value|' + "".join(["  dim" +str(j+1)+"|" for j in range(dim)])
         # print('| id |weight| value|')  #TODO
         print(s)
         k_value = 0
@@ -178,10 +178,10 @@ def print_solution(path, knapsacks): #TODO
                 for j in range(dim):
                     k_weights[j] = k_weights[j] + edge.end[2+j]
 
-        # print("cap")
-        # print(knapsack_capacity)
-        # print("weights")
-        # print(k_weights)
+        print("cap")
+        print(knapsack_capacity)
+        print("weights")
+        print(k_weights)
 
         print("value = %g" % k_value)
         used_capacity = np.prod(k_weights)

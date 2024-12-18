@@ -16,7 +16,7 @@ import tspGaPathfinder as tG
 # from tspUtils import generateInstance, evaluate
 
 def main():
-    time_sos()
+    # time_sos()
     plot()
 
 def time_sos():
@@ -119,28 +119,28 @@ def time_sos():
 
 def plot():
     verbose = True #do we want to print everything? 
-    iterations = 200
+    iterations = 10
     
     plot1 = plt.subplot2grid((3, 1), (0, 0))
     plot2 = plt.subplot2grid((3, 1), (1, 0))
     plot3 = plt.subplot2grid((3, 1), (2, 0))
 
-    n = 5
-    t0= time.time()
-    rastrigin_ants = np.array(rA.train_ants(verbose=verbose, max_iterations=iterations, n=n))
-    print(time.time() - t0)
-    t0= time.time()
-    rastrigin_GA = np.array(rG.train_GA(verbose=verbose, iterations=iterations, dimensions=n))
-    print(time.time() - t0)
-    x_a = rastrigin_ants[:, 0].astype(int)
-    x_g = rastrigin_GA[:, 0].astype(int)
-    plot1.plot(x_a, rastrigin_ants[:, 1], color="green", label="current best ants") #current best
-    plot1.plot(x_a, rastrigin_ants[:, 2], color="blue", label="global best ants")  #global best
-    plot1.plot(x_g, rastrigin_GA[:, 1], color="red", label="current best GA") #current best
-    plot1.plot(x_g, rastrigin_GA[:, 2], color="orange", label="global best GA")  #global best
-    plot1.set_title("Rastrigin for n=%d" % n)
-    plot1.set_xlabel("Iteration/Generation")
-    plot1.set_ylabel("rastrigin value")
+    # n = 5
+    # t0= time.time()
+    # rastrigin_ants = np.array(rA.train_ants(verbose=verbose, max_iterations=iterations, n=n))
+    # print(time.time() - t0)
+    # t0= time.time()
+    # rastrigin_GA = np.array(rG.train_GA(verbose=verbose, iterations=iterations, dimensions=n))
+    # print(time.time() - t0)
+    # x_a = rastrigin_ants[:, 0].astype(int)
+    # x_g = rastrigin_GA[:, 0].astype(int)
+    # plot1.plot(x_a, rastrigin_ants[:, 1], color="green", label="current best ants") #current best
+    # plot1.plot(x_a, rastrigin_ants[:, 2], color="blue", label="global best ants")  #global best
+    # plot1.plot(x_g, rastrigin_GA[:, 1], color="red", label="current best GA") #current best
+    # plot1.plot(x_g, rastrigin_GA[:, 2], color="orange", label="global best GA")  #global best
+    # plot1.set_title("Rastrigin for n=%d" % n)
+    # plot1.set_xlabel("Iteration/Generation")
+    # plot1.set_ylabel("rastrigin value")
 
     num_knapsacks = 10
     num_items = 100
@@ -157,18 +157,18 @@ def plot():
     plot2.set_xlabel("Iteration/Generation")
     plot2.set_ylabel("total knapsack value")
 
-    cities = 50
-    tsp_ants = np.array(tA.train_ants(verbose=verbose,num_cities=cities, max_iterations=iterations))
-    tsp_GA = np.array(tG.train_GA(verbose=verbose, cities=cities, iterations=iterations))
-    x_a = tsp_ants[:, 0].astype(int)
-    x_g = tsp_GA[:, 0].astype(int)
-    plot3.plot(x_a, tsp_ants[:, 1], color="green", label="current best ants") #current best
-    plot3.plot(x_a, tsp_ants[:, 2], color="blue", label="global best ants")  #global best
-    plot3.plot(x_g, tsp_GA[:, 1], color="red", label="current best GA") #current best
-    plot3.plot(x_g, tsp_GA[:, 2], color="orange", label="global best GA")  #global best
-    plot3.set_title("TSP for %d citites" % cities)
-    plot3.set_xlabel("Iteration/Generation")
-    plot3.set_ylabel("shortest path length")
+    # cities = 50
+    # tsp_ants = np.array(tA.train_ants(verbose=verbose,num_cities=cities, max_iterations=iterations))
+    # tsp_GA = np.array(tG.train_GA(verbose=verbose, cities=cities, iterations=iterations))
+    # x_a = tsp_ants[:, 0].astype(int)
+    # x_g = tsp_GA[:, 0].astype(int)
+    # plot3.plot(x_a, tsp_ants[:, 1], color="green", label="current best ants") #current best
+    # plot3.plot(x_a, tsp_ants[:, 2], color="blue", label="global best ants")  #global best
+    # plot3.plot(x_g, tsp_GA[:, 1], color="red", label="current best GA") #current best
+    # plot3.plot(x_g, tsp_GA[:, 2], color="orange", label="global best GA")  #global best
+    # plot3.set_title("TSP for %d citites" % cities)
+    # plot3.set_xlabel("Iteration/Generation")
+    # plot3.set_ylabel("shortest path length")
 
     plt.tight_layout()
     plt.legend()
