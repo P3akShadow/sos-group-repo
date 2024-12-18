@@ -9,7 +9,7 @@ import random
 def main():
     train_GA()
 
-def train_GA(verbose=True,knapsacks=10, items=200, iterations=100, dim=3):
+def train_GA(verbose=True,knapsacks=10, items=100, iterations=100, dim=3):
     knapsackSizes = [[10],[10]]
     itemSizes = [[9],[7],[5],[4],[1]]
     #print(evaluate(knapsackSizes, itemSizes, range(5)))
@@ -17,13 +17,15 @@ def train_GA(verbose=True,knapsacks=10, items=200, iterations=100, dim=3):
 
     # knapsacks = 10
     # items = 200
-    (knapsackSizes, itemSizes) = generateInstance(knapsacks, items, knapsack_mean=10, items_mean=3, dimensions=dim)
+    #(knapsackSizes, itemSizes) = generateInstance(knapsacks, items, knapsack_mean=10, items_mean=3, dimensions=dim)
+    (knapsackSizes, itemSizes) = generateInstance(knapsacks, items, dimensions=dim)
     if verbose:
         print(knapsackSizes)
+        print(itemSizes)
     #print(itemSizes)
     #print(evaluate(knapsackSizes, itemSizes, range(10)))
 
-    creator.create("FitnessKnapsack", base.Fitness, weights=(10.0, -1.0))
+    creator.create("FitnessKnapsack", base.Fitness, weights=(10.0, -0.01))
     creator.create("Individual", list, fitness=creator.FitnessKnapsack)
 
     toolbox = base.Toolbox()
@@ -36,7 +38,7 @@ def train_GA(verbose=True,knapsacks=10, items=200, iterations=100, dim=3):
     #Create a mapping that maps elements to the element in the same position but on the other side
     #map the occuring elements accordingly to keep the permutation property
     toolbox.register("mate", tools.cxPartialyMatched)
-    toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1.5/items)
+    toolbox.register("mutate", tools.mutShuffleIndexes, indpb=2.1/items)
     toolbox.register("select", tools.selTournament, tournsize=3)
     toolbox.register("evaluate", lambda x: evaluate(knapsackSizes, itemSizes, x))
 
@@ -66,6 +68,7 @@ def optimize(toolbox, itemSizes, knapsackSizes, population=400, iterations=100, 
             print("#################")
         
         best_ind = tools.selTournament(pop, 1, tournsize=len(pop))[0]
+        evaluate(knapsackSizes, itemSizes, best_ind, True)
         if verbose:
             print(best_ind)
             print(best_ind.fitness.values)
