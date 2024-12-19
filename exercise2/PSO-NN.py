@@ -67,7 +67,7 @@ class PSOOptimizer:
         Y_train: target of the train set
 
         This is the fitness function used by the PSO, which is to be implemented (completed ) 
-        by the strudents. The objective is understanding the concept of how PSO is applied in 
+        by the students. The objective is understanding the concept of how PSO is applied in 
         this use case, namely optimizing a NN.
 
         Note that in each iteration of the PSO algorithm, a set of solutions are generated, 
@@ -76,7 +76,7 @@ class PSOOptimizer:
         position), X is a two-dimensional array.
 
         Note that each solution is used to setup the weights and biases of the network. 
-        Therefor, what you shuld do here is performing the forward propagation each time
+        Therefore, what you should do here is performing the forward propagation each time
         using the solution and random batches of training data to return the resulting accuracies 
         in a one-dimensional list.
 
