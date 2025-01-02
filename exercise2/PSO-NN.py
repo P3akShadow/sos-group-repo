@@ -87,7 +87,10 @@ class PSOOptimizer:
         but it will result in low accuracy ~ 1/n_classes.
         """
         # TODO: complete the implementation of this function
-        return np.array([1 * X.shape[0]])
+        # first attempt
+        return np.array([self.nn.forward_prop(particle, X_train, y_train) for particle in X])
+
+        # return np.array([1 * X.shape[0]])
 
     def random_batch(self, X_train, y_train):
         indices = np.random.choice(len(X_train), size=self.batchsize, replace=False)
