@@ -21,12 +21,12 @@ enable objective comparison.
 ############ Select the Dataset ###############
 # Select a data set here. See datasets.py
 
-data = load_breast_cancer()
+# data = load_breast_cancer()
 #data = load_glass_data()
 #data = load_magic_gamma_data()
 #data = load_pen_digits_data()
 #data = load_wine_quality_data()
-#data = load_iris_data()
+data = load_iris_data()
 
 ####### Tune the NN parameters here to maximize the accuracy for your seleced DS #######
 
