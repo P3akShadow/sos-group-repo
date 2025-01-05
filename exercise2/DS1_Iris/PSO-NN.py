@@ -123,7 +123,7 @@ def main():
     print ("Number hidden layers: ", n_hidden)
     print ("activation: ", activation[0])
     print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
-    print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Ieteration: ", n_iteration)
+    print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
     print ("\n")
 
 
