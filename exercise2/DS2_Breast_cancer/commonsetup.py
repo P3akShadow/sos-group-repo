@@ -32,20 +32,20 @@ data = load_breast_cancer()
 
 # Define the number of the hidden layer
 # This should be suitable for the dataset you selected
-n_hidden = 10
+n_hidden = 30
 
 # Define the activation function
 # you can choose any from activations.py. The options are imported above
 # (Reference the tuple to ensure that also the right derivative is used)
-activation = SIGMOID 
-# activations = [SIGMOID, TANH, RELU, LEAKY_RELU, ELU, SOFTMAX, SWISH, SOFTPLUS, GELU] #CUSTOM ADD
+activation = LEAKY_RELU
+# activations_list = [SIGMOID, TANH, RELU, LEAKY_RELU, ELU, SOFTMAX, SWISH, SOFTPLUS, GELU] #CUSTOM ADD
 
 # Set the total number of iterations
 n_iteration = 1000 
 
 # Tune the learning rate (this is used only by classic-NN and will not affect PSO-NN)
-learning_rate = 0.1
-# learning_rates = [1*10**i for i in range(-6, 2)]
+learning_rate = 0.01
+# learning_rates_list = [1*10**i for i in range(-6, 2)]
 
 ############# Perform data split and setup ###########################
 
