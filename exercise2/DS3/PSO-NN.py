@@ -121,56 +121,60 @@ def main():
     par_C1s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
     par_C2 = 0.1
     par_C2s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
-    par_W = 0.1
+    par_W = 0.9
     par_Ws = [0.1*i for i in range(1,10)]#CUSTOM_ADD
     par_SwarmSize = 100
     batchsize = 200 # The number of data instances used by the fitness function
 
-
+    early_stop_acc = .95#CUSTOM_ADD
     max_accuracy = 0#CUSTOM_ADD
     best_C1 = 0#CUSTOM_ADD
     best_C2 = 0#CUSTOM_ADD
     best_W = 0#CUSTOM_ADD
     for par_C1 in par_C1s:#CUSTOM_ADD
-        if max_accuracy >= 1: break#CUSTOM_ADD
+        if max_accuracy >= early_stop_acc: break#CUSTOM_ADD
         for par_C2 in par_C2s:#CUSTOM_ADD
-            if max_accuracy >= 1: break#CUSTOM_ADD
+            if max_accuracy >= early_stop_acc: break#CUSTOM_ADD
             for par_W in par_Ws:#CUSTOM_ADD
-                if max_accuracy >= 1: break#CUSTOM_ADD
-                print ("############ you are using the following settings:")
-                print ("Number hidden layers: ", n_hidden)
-                print ("activation: ", activation[0])
-                print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
-                print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
-                print ("\n")
+                if max_accuracy >= early_stop_acc: break#CUSTOM_ADD
+                curr_accuracy = 0#CUSTOM_ADD
+                for experiment in range(10):#CUSTOM_ADD
+                    print ("############ you are using the following settings:")
+                    print ("Number hidden layers: ", n_hidden)
+                    print ("activation: ", activation[0])
+                    print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
+                    print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
+                    print ("\n")
 
 
-                # Initialize Neural Network and PSO optimizer
-                nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0])
-                pso = PSOOptimizer(nn, par_C1, par_C2, par_W, par_SwarmSize, n_iteration, batchsize)
+                    # Initialize Neural Network and PSO optimizer
+                    nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0])
+                    pso = PSOOptimizer(nn, par_C1, par_C2, par_W, par_SwarmSize, n_iteration, batchsize)
 
-                # Perform optimization
-                weights = pso.optimize(X_train, y_train)
+                    # Perform optimization
+                    weights = pso.optimize(X_train, y_train)
 
-                # Evaluate accuracy on the test set
-                y_pred = nn.predict(weights, X_test)
-                accuracy = (y_pred == y_test).mean()
-                print(f"Accuracy PSO-NN: {accuracy:.2f}")
+                    # Evaluate accuracy on the test set
+                    y_pred = nn.predict(weights, X_test)
+                    accuracy = (y_pred == y_test).mean()
+                    print(f"Accuracy PSO-NN: {accuracy:.2f}")
+                    curr_accuracy += accuracy
 
-                if accuracy > max_accuracy:
-                    max_accuracy = accuracy
-                    best_C1 = par_C1
-                    best_C2 = par_C2
-                    best_W = par_W
+                avg_accuracy = curr_accuracy / 10
+                if avg_accuracy > max_accuracy:#CUSTOM_ADD
+                    max_accuracy = avg_accuracy#CUSTOM_ADD
+                    best_C1 = par_C1#CUSTOM_ADD
+                    best_C2 = par_C2#CUSTOM_ADD
+                    best_W = par_W#CUSTOM_ADD
 
-    print ("\n\n")
-    print ("############ Achieved best accuracy using the following settings:")
-    print ("Number hidden layers: ", n_hidden)
-    print ("activation: ", activation[0])
-    print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
-    print ("PSO parameters C1: ", best_C1, "C2: ", best_C2, "W: ", best_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
-    print ("\n")
-    print(f"Accuracy PSO-NN: {accuracy:.2f}")
+    print ("\n\n")#CUSTOM_ADD
+    print ("############ Achieved best accuracy using the following settings:")#CUSTOM_ADD
+    print ("Number hidden layers: ", n_hidden)#CUSTOM_ADD
+    print ("activation: ", activation[0])#CUSTOM_ADD
+    print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)#CUSTOM_ADD
+    print ("PSO parameters C1: ", best_C1, "C2: ", best_C2, "W: ", best_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)#CUSTOM_ADD
+    print ("\n")#CUSTOM_ADD
+    print(f"Accuracy PSO-NN: {max_accuracy:.2f}")#CUSTOM_ADD
 
 
 if __name__ == "__main__":

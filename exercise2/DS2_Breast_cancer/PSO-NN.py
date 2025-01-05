@@ -122,7 +122,7 @@ def main():
     par_C1s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
     par_C2 = 0.1
     par_C2s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
-    par_W = 0.7
+    par_W = 0.9
     par_Ws = [0.1*i for i in range(1,10)]#CUSTOM_ADD
     par_SwarmSize = 100
     batchsize = 200 # The number of data instances used by the fitness function
@@ -175,7 +175,7 @@ def main():
     print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)#CUSTOM_ADD
     print ("PSO parameters C1: ", best_C1, "C2: ", best_C2, "W: ", best_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)#CUSTOM_ADD
     print ("\n")#CUSTOM_ADD
-    print(f"Accuracy PSO-NN: {accuracy:.2f}")#CUSTOM_ADD
+    print(f"Accuracy PSO-NN: {max_accuracy:.2f}")#CUSTOM_ADD
 
 
 if __name__ == "__main__":

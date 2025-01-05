@@ -174,7 +174,7 @@ def main():
     # print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)#CUSTOM_ADD
     # print ("PSO parameters C1: ", best_C1, "C2: ", best_C2, "W: ", best_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)#CUSTOM_ADD
     # print ("\n")#CUSTOM_ADD
-    # print(f"Accuracy PSO-NN: {accuracy:.2f}")#CUSTOM_ADD
+    # print(f"Accuracy PSO-NN: {max_accuracy:.2f}")#CUSTOM_ADD
 
 
 if __name__ == "__main__":
