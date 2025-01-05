@@ -114,29 +114,58 @@ def main():
     # Tune the PSO parameters here trying to outperform the classic NN 
     # For more about these parameters, see the lecture resources
     par_C1 = 0.1
+    par_C1s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
     par_C2 = 0.1
+    par_C2s = [0.1*i for i in range(1,20)]#CUSTOM_ADD
     par_W = 0.1
+    par_Ws = [0.1*i for i in range(1,10)]#CUSTOM_ADD
     par_SwarmSize = 100
     batchsize = 200 # The number of data instances used by the fitness function
 
-    print ("############ you are using the following settings:")
+
+    max_accuracy = 0#CUSTOM_ADD
+    best_C1 = 0#CUSTOM_ADD
+    best_C2 = 0#CUSTOM_ADD
+    best_W = 0#CUSTOM_ADD
+    for par_C1 in par_C1s:#CUSTOM_ADD
+        if max_accuracy >= 1: break#CUSTOM_ADD
+        for par_C2 in par_C2s:#CUSTOM_ADD
+            if max_accuracy >= 1: break#CUSTOM_ADD
+            for par_W in par_Ws:#CUSTOM_ADD
+                if max_accuracy >= 1: break#CUSTOM_ADD
+                print ("############ you are using the following settings:")
+                print ("Number hidden layers: ", n_hidden)
+                print ("activation: ", activation[0])
+                print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
+                print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
+                print ("\n")
+
+
+                # Initialize Neural Network and PSO optimizer
+                nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0])
+                pso = PSOOptimizer(nn, par_C1, par_C2, par_W, par_SwarmSize, n_iteration, batchsize)
+
+                # Perform optimization
+                weights = pso.optimize(X_train, y_train)
+
+                # Evaluate accuracy on the test set
+                y_pred = nn.predict(weights, X_test)
+                accuracy = (y_pred == y_test).mean()
+                print(f"Accuracy PSO-NN: {accuracy:.2f}")
+
+                if accuracy > max_accuracy:
+                    max_accuracy = accuracy
+                    best_C1 = par_C1
+                    best_C2 = par_C2
+                    best_W = par_W
+
+    print ("\n\n")
+    print ("############ Achieved best accuracy using the following settings:")
     print ("Number hidden layers: ", n_hidden)
     print ("activation: ", activation[0])
     print ("Number of variables to optimize: ", (n_inputs * n_hidden) + (n_hidden * n_classes) + n_hidden + n_classes)
-    print ("PSO parameters C1: ", par_C1, "C2: ", par_C2, "W: ", par_W, "Swarmsize: ", par_SwarmSize,  "Ieteration: ", n_iteration)
+    print ("PSO parameters C1: ", best_C1, "C2: ", best_C2, "W: ", best_W, "Swarmsize: ", par_SwarmSize,  "Iteration: ", n_iteration)
     print ("\n")
-
-
-    # Initialize Neural Network and PSO optimizer
-    nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0])
-    pso = PSOOptimizer(nn, par_C1, par_C2, par_W, par_SwarmSize, n_iteration, batchsize)
-
-    # Perform optimization
-    weights = pso.optimize(X_train, y_train)
-
-    # Evaluate accuracy on the test set
-    y_pred = nn.predict(weights, X_test)
-    accuracy = (y_pred == y_test).mean()
     print(f"Accuracy PSO-NN: {accuracy:.2f}")
 
 

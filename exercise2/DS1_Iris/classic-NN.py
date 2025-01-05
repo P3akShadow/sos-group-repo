@@ -73,7 +73,9 @@ def main():
     # best_activation_index = 0
     # best_learning_rate = 0
     # for i, activation in enumerate(activations):#CUSTOM_ADD
+    #     if max_accuracy >= 1: break#CUSTOM_ADD
     #     for learning_rate in learning_rates:#CUSTOM_ADD
+    #         if max_accuracy >= 1: break#CUSTOM_ADD
     nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0], activation[1])
     nn.train(X_train, y_train, n_iteration, learning_rate)
     y_pred = nn.predict(X_test)
