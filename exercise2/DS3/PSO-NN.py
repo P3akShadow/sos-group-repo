@@ -87,8 +87,12 @@ class PSOOptimizer:
         but it will result in low accuracy ~ 1/n_classes.
         """
         # TODO: complete the implementation of this function
-        # first attempt
-        return np.array([self.nn.forward_prop(particle_coords, X_train, y_train) for particle_coords in X])
+        # --first attempt--
+        # return np.array([self.nn.forward_prop(particle_coords, X_train, y_train) for particle_coords in X])
+        # --second attempt--
+        result = np.array([self.nn.forward_prop(particle_coords, X_train, y_train) for particle_coords in X])
+        result[np.isnan(result)] = float(100000)
+        return result
 
         # return np.array([1 * X.shape[0]])
 
