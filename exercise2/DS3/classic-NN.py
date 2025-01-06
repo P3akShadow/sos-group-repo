@@ -1,6 +1,6 @@
 import numpy as np
-from commonsetup import n_hidden, X_train, X_test, y_train, y_test, n_inputs, n_classes, activation, n_iteration, learning_rate
-# from commonsetup import activations, learning_rates#CUSTOM_ADD
+from commonsetup import n_hidden, X_train, X_test, y_train, y_test, n_inputs, n_classes, n_iteration, activation, learning_rate
+# from commonsetup import activations_list, learning_rates_list#CUSTOM_ADD
 
 class NeuralNetwork:
     def __init__(self, n_inputs, n_hidden, n_classes, activation, activation_derivative):
@@ -69,25 +69,30 @@ class NeuralNetwork:
         return exp_z / np.sum(exp_z, axis=1, keepdims=True)
 
 def main():
-    max_accuracy = 0#CUSTOM_ADD
-    best_activation_index = 0
-    best_learning_rate = 0
-    for i, activation in enumerate(activations):#CUSTOM_ADD
-        if max_accuracy >= 1: break#CUSTOM_ADD
-        for learning_rate in learning_rates:#CUSTOM_ADD
-            if max_accuracy >= 1: break#CUSTOM_ADD
-            nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0], activation[1])
-            nn.train(X_train, y_train, n_iteration, learning_rate)
-            y_pred = nn.predict(X_test)
-            accuracy = (y_pred == y_test).mean()
-            print(f"Accuracy Classic-NN: {accuracy:.2f}")
-            if max_accuracy < accuracy: #CUSTOM_ADD
-                max_accuracy = accuracy#CUSTOM_ADD
-                best_activation_index = i#CUSTOM_ADD
-                best_learning_rate = learning_rate#CUSTOM_ADD
-    print(f"Max Accuracy for Classic-NN: {max_accuracy:.2f}")#CUSTOM_ADD
-    print("for activation function %d" % best_activation_index)#CUSTOM_ADD
-    print("and learning rate %f" % best_learning_rate)#CUSTOM_ADD
+    # early_stop_acc = .95#CUSTOM_ADD
+    # max_accuracy = 0#CUSTOM_ADD
+    # best_activation_index = 0#CUSTOM_ADD
+    # best_learning_rate = 0#CUSTOM_ADD
+    # for i, activation in enumerate(activations_list):#CUSTOM_ADD
+    #     if max_accuracy >= early_stop_acc: break#CUSTOM_ADD
+    #     for learning_rate in learning_rates_list:#CUSTOM_ADD
+    #         if max_accuracy >= early_stop_acc: break#CUSTOM_ADD
+    #         curr_accuracy = 0#CUSTOM_ADD
+    #         for experiment in range(10):#CUSTOM_ADD
+                nn = NeuralNetwork(n_inputs, n_hidden, n_classes, activation[0], activation[1])
+                nn.train(X_train, y_train, n_iteration, learning_rate)
+                y_pred = nn.predict(X_test)
+                accuracy = (y_pred == y_test).mean()
+                print(f"Accuracy Classic-NN: {accuracy:.2f}")
+    #             curr_accuracy += accuracy#CUSTOM_ADD
+    #         avg_accuracy = curr_accuracy / 10#CUSTOM_ADD
+    #         if max_accuracy < avg_accuracy: #CUSTOM_ADD
+    #             max_accuracy = avg_accuracy#CUSTOM_ADD
+    #             best_activation_index = i#CUSTOM_ADD
+    #             best_learning_rate = learning_rate#CUSTOM_ADD
+    # print(f"Max avg Accuracy for Classic-NN: {max_accuracy:.2f}")#CUSTOM_ADD
+    # print("for activation function %d" % best_activation_index)#CUSTOM_ADD
+    # print("and learning rate %f" % best_learning_rate)#CUSTOM_ADD
     
 if __name__ == "__main__":
     main()
