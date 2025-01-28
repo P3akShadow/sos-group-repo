@@ -45,6 +45,10 @@ def _build_iteration_indexes(data_len, num_iterations,
     else:
         return iterations
 
+def build_iteration_indexes(data_len, num_iterations,
+                             verbose=False, random_generator=None,
+                             use_epochs=False):
+    return _build_iteration_indexes(data_len, num_iterations, verbose, random_generator, use_epochs)
 
 def _wrap_index__in_verbose(iterations):
     """Yields the values in iterations printing the status on the stdout."""
