@@ -1,0 +1,15 @@
+{
+    "vizulizationName": "U-matrix",
+    "numberOfLayers": 10,
+    "x": 10,
+    "y": 10,
+    "sigma": 1.0,
+    "learningRate": 0.7,
+    "featuresA": [
+        0,
+        2,
+        4,
+        6,
+        8
+    ]
+}

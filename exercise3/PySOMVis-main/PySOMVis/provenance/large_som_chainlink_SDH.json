@@ -1,0 +1,14 @@
+{
+    "vizulizationName": "SDH",
+    "numberOfLayers": 5,
+    "x": 100,
+    "y": 60,
+    "sigma": 7,
+    "learningRate": 0.7,
+    "featuresA": [
+        1,
+        2
+    ],
+    "smoothing factor": 1,
+    "approach": 0
+}

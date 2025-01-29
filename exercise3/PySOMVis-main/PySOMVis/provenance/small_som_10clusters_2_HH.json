@@ -1,0 +1,15 @@
+{
+    "vizulizationName": "Hit Histogram",
+    "numberOfLayers": 6,
+    "x": 10,
+    "y": 10,
+    "sigma": 1.0,
+    "learningRate": 0.7,
+    "featuresA": [
+        0,
+        1,
+        2,
+        3,
+        4
+    ]
+}
